@@ -1,7 +1,13 @@
 ---
-- hosts: webservers
+- hosts: localhost
   become: yes
   tasks:
+    - name: Install Packages
+      apt: 
+        name: openjdk-8-jdk
+        state: present
+      become: yes
+            
     - name: Update apt cache
       apt:
         update_cache: yes
@@ -27,3 +33,12 @@
       command: npm install
       args:
         chdir: /opt/your_app
+
+    - name: Execute Date Command
+      command: date
+    
+    - name: Execute java version check
+      command: java -version
+    
+    - name: Test local action
+      command: echo "Hello World"
