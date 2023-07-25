@@ -1,0 +1,29 @@
+---
+- hosts: webservers
+  become: yes
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+      become: yes
+
+    - name: Install Node.js and npm
+      apt:
+        name: "{{ item }}"
+        state: present
+      become: yes
+      loop:
+        - nodejs
+        - npm
+
+    - name: Clone the Git repository
+      git:
+        repo: "https://github.com/pnp2484/node_express_github_actions"
+        dest: "/opt/your_app"
+        version: "main"
+      become: yes
+
+    - name: Install project dependencies
+      command: npm install
+      args:
+        chdir: /opt/your_app
